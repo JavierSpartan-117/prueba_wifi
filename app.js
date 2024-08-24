@@ -1,5 +1,4 @@
 import express from "express";
-import axios from "axios";
 import { db } from "./db/connection.js";
 import dotenv from "dotenv";
 
@@ -8,14 +7,16 @@ dotenv.config();
 const app = express();
 const port = 3000;
 
-
-db.connect((err) => {
-  if (err) {
-    console.error("Error al conectar a la base de datos: ", err);
-    return;
+const connectToDatabase = async () => {
+  try {
+    await db.connect();
+    console.log("Conexión a la base de datos exitosa");
+  } catch (error) {
+    console.error("Error al conectar a la base de datos", error);
   }
-  console.log("Conexión a la base de datos exitosa");
-});
+}
+
+connectToDatabase();
 
 app.use(express.json());
 
